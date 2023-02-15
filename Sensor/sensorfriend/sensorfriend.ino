@@ -80,7 +80,7 @@ void setup() {
 
     // wait 10 seconds for connection:
 
-    delay(10000);
+    delay(8000);
 
   }
 
