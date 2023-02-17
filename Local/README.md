@@ -12,4 +12,4 @@ Coming soon...
 
 ## Disclaimer
 
-Based on DJI Example project, see License file for more information.
+Based on [DJI Example project](https://github.com/DJI-Mobile-SDK-Tutorials/Android-UXSDKDemo), see License file for more information.
