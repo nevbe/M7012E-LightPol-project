@@ -9,3 +9,7 @@ Coming soon...
 ## Runing
 
 Coming soon...
+
+## Disclaimer
+
+Based on DJI Example project, see License file for more information.
