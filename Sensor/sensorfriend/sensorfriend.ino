@@ -7,7 +7,14 @@ int keyIndex = 0;                 // your network key Index number (needed only 
 
 int status = WL_IDLE_STATUS;
 
-WiFiServer server(80);
+IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
+//char server[] = "www.google.com";    // name address for Google (using DNS)
+
+// Initialize the Ethernet client library
+// with the IP address and port of the server
+// that you want to connect to (port 80 is default for HTTP):
+
+WiFiClient client;
 
 void printWifiStatus() {
 
@@ -36,8 +43,31 @@ void printWifiStatus() {
   Serial.println(" dBm");
 }
 
-void setup() {
+long int GetResistance(int measurement) {
+  static int R1 = 10000;
+  static int R2 = 680;
+  static int sensitivity = 65536;
+  if(measurement > 0) {
+    return R1 * sensitivity / measurement - R1 - R2;
+  }
+  return 0;
+}
 
+void ReadString(String& str_ref) {
+  if (str_ref.indexOf("send help") == 0) {
+    client.println("no help");
+  }
+  if (str_ref.indexOf("wtf") == 0) {
+    client.println("sensor friend");
+  }
+  if (str_ref.indexOf("send") == 0) {
+    client.print("meas ");
+    client.println(GetResistance(analogRead(A2)));
+  }
+}
+
+void setup() {
+  
   //Initialize serial and wait for port to open:
 
   Serial.begin(9600);
@@ -60,12 +90,6 @@ void setup() {
 
   }
 
-  //String fv = WiFi.firmwareVersion();
-
-  //if (fv != "1.1.0") {
-    //Serial.println("Please upgrade the firmware");
-  //}
-
   // attempt to connect to Wifi network:
 
   while (status != WL_CONNECTED) {
@@ -78,116 +102,64 @@ void setup() {
 
     status = WiFi.begin(ssid, pass);
 
-    // wait 10 seconds for connection:
+    // wait 5 seconds for connection:
 
-    delay(8000);
+    delay(5000);
 
   }
 
-  server.begin();
-
-  // you're connected now, so print out the status:
+  Serial.println("Connected to wifi");
 
   printWifiStatus();
+
+  Serial.println("\nStarting connection to server...");
+
+  // if you get a connection, report back via serial:
+
+  if (client.connect(server, 80)) {
+
+    Serial.println("connected to server");
+
+  }
 }
 
 void loop() {
 
-  // listen for incoming clients
+  // if there are incoming bytes available
 
-  WiFiClient client = server.available();
+  // from the server, read them and print them:
 
-  if (client) {
+  static String msg = "";
 
-    Serial.println("new client");
+  while (client.available()) {
 
-    // an http request ends with a blank line
+    char c = client.read();
 
-    bool currentLineIsBlank = true;
+    Serial.write(c);
 
-    while (client.connected()) {
-
-      if (client.available()) {
-
-        char c = client.read();
-
-        Serial.write(c);
-
-        // if you've gotten to the end of the line (received a newline
-
-        // character) and the line is blank, the http request has ended,
-
-        // so you can send a reply
-
-        if (c == '\n' && currentLineIsBlank) {
-
-          // send a standard http response header
-
-          client.println("HTTP/1.1 200 OK");
-
-          client.println("Content-Type: text/html");
-
-          client.println("Connection: close");  // the connection will be closed after completion of the response
-
-          client.println("Refresh: 5");  // refresh the page automatically every 5 sec
-
-          client.println();
-
-          client.println("<!DOCTYPE HTML>");
-
-          client.println("<html>");
-
-          // output the value of each analog input pin
-
-          for (int analogChannel = 0; analogChannel < 6; analogChannel++) {
-
-            int sensorReading = analogRead(analogChannel);
-
-            client.print("analog input ");
-
-            client.print(analogChannel);
-
-            client.print(" is ");
-
-            client.print(sensorReading);
-
-            client.println("<br />");
-
-          }
-
-          client.println("</html>");
-
-          break;
-
-        }
-
-        if (c == '\n') {
-
-          // you're starting a new line
-
-          currentLineIsBlank = true;
-
-        } else if (c != '\r') {
-
-          // you've gotten a character on the current line
-
-          currentLineIsBlank = false;
-
-        }
-
-      }
-
+    msg = msg + c;//into string
+    int n = msg.indexOf('\n');
+    if (n >= 0) {
+      String com = msg.substring(0, n);
+      msg = msg.substring(n);
+      ReadString(com);
     }
+    
+  }
 
-    // give the web browser time to receive the data
+  // if the server's disconnected, stop the client:
 
-    delay(1);
+  if (!client.connected()) {
 
-    // close the connection:
+    Serial.println();
+
+    Serial.println("disconnecting from server.");
 
     client.stop();
 
-    Serial.println("client disconnected");
+    // do nothing forevermore:
+
+    while (true);
 
   }
 }
