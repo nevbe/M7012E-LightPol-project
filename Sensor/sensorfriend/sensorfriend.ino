@@ -53,16 +53,29 @@ long int GetResistance(int measurement) {
   return 0;
 }
 
+void PrintMeasurements() {
+  Serial.print("meas ");
+  Serial.print(GetResistance(analogRead(A1)));
+  Serial.print(" ");
+  Serial.print(GetResistance(analogRead(A2)));
+  Serial.print(" ");
+  Serial.println(GetResistance(analogRead(A3)));
+}
+
 void ReadString(String& str_ref) {
-  if (str_ref.indexOf("send help") == 0) {
+  if (str_ref.indexOf("send help") == 0) {//authentication
     client.println("no help");
   }
-  if (str_ref.indexOf("wtf") == 0) {
+  if (str_ref.indexOf("wtf") == 0) {//identification
     client.println("sensor friend");
   }
-  if (str_ref.indexOf("send") == 0) {
+  if (str_ref.indexOf("send") == 0) {//perform task
     client.print("meas ");
-    client.println(GetResistance(analogRead(A2)));
+    client.print(GetResistance(analogRead(A1)));
+    client.print(" ");
+    client.print(GetResistance(analogRead(A2)));
+    client.print(" ");
+    client.println(GetResistance(analogRead(A3)));
   }
 }
 
