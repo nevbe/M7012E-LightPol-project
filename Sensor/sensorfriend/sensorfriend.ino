@@ -6,9 +6,11 @@ char pass[] = "12345678";   // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
+int port = 20276;
 
-IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
+IPAddress server(192,168,163,141);  // numeric IP for Google (no DNS)
 //char server[] = "www.google.com";    // name address for Google (using DNS)
+//74,125,232,128
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server
@@ -129,7 +131,7 @@ void setup() {
 
   // if you get a connection, report back via serial:
 
-  if (client.connect(server, 80)) {
+  if (client.connect(server, port)) {
 
     Serial.println("connected to server");
 
@@ -137,7 +139,7 @@ void setup() {
 }
 
 void loop() {
-
+  client.println("friend");
   // if there are incoming bytes available
 
   // from the server, read them and print them:
@@ -170,9 +172,11 @@ void loop() {
 
     client.stop();
 
-    // do nothing forevermore:
-
-    while (true);
+    if (client.connect(server, port)) {//reconnect
+  
+      Serial.println("connected to server");
+  
+    }
 
   }
 }
