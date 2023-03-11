@@ -42,8 +42,22 @@ Example usage:
 >	img abc.jpg;90561
 >	d0hasn0daKs]uidhoa089i<udhasDohaÅOJud (...) (90561 bytes in total, can be sent over multiple messages)
 
+sensor friend
+in order to re-indentify as a sensor, send message:
+>	sensor friend
 
+phone friend
+in order to re-indentify as a phone, send message:
+>	phone friend
 
+IMPORTANT NOTE:
+After the client has been inactive for a period of time, the server will send a message to check on you:
+>	hello
+You must send a message (any message) to the server ASAP to avoid having the connection terminated.
+For example:
+>	hello
+The server waits the same amount of time before kicking you after checking on you as it waits before checking on you.
+Any message sent to the server will make the timeout counter 0, regardless if it is a valid command or not.
 
 
 
