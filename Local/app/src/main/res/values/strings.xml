@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">UXSDKDemo</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Drone-Interactor</string>
+    <string name="debugText">default</string>
 </resources>
