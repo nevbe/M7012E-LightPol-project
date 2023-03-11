@@ -1,0 +1,52 @@
+HOW TO CONNECT TO THE SERVER:
+
+connect to the IP of the server, connect to port 20276
+
+The server will send a message to greet you:
+>	send help
+
+Authenticate by answering accordingly: (the message must at least start with this phrase)
+>	no help
+
+If you fail to authenticate, the connection will be terminated by the server.
+If you are successfully authenticated, the server will send you the following message:
+>	wtf
+
+You must now identify yourself. There are 2 options here:
+1. You are a sensor application that will send measurement data. Answer with the following:
+>	sensor friend
+2. You are a phone application that will send images and receive information. Answer with the following:
+>	phone friend
+
+After you have authenticated and identified yourself, you can freely communicate with the server.
+There are a few command you can use here.
+
+meas (sensor)
+This sends measurements to the server.
+This command follows the following structure:
+>	meas x y z
+x, y and z are integer numbers written as ascii characters.
+Example usage:
+>	meas 98 592 9
+
+img (phone)
+This sends an image to the server.
+It follows the following structure:
+>	img name.jpg;bytes
+name can be any name containing letters and numbers, bytes is the number of bytes written as ascii characters.
+Example usage:
+>	img abc.jpg;90561
+
+
+
+
+
+
+
+
+
+
+
+
+
+
