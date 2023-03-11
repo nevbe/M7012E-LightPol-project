@@ -1,6 +1,6 @@
 HOW TO CONNECT TO THE SERVER:
 
-connect to the IP of the server, connect to port 20276
+connect to the IP of the server, the server is hosted on port 20276.
 
 The server will send a message to greet you:
 >	send help
