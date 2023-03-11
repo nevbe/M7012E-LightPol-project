@@ -33,11 +33,14 @@ img (phone)
 This sends an image to the server.
 It follows the following structure:
 >	img name.jpg;bytes
+>	(file contents)
 name can be any name containing letters and numbers, bytes is the number of bytes written as ascii characters.
+file contents is just raw file contents as bytes. The number of bytes is defined above.
+The server will wait for all contents to be received before reconstructing the image.
+Maximum size is 25 megabytes (25000000 bytes).
 Example usage:
 >	img abc.jpg;90561
-
-
+>	d0hasn0daKs]uidhoa089i<udhasDohaÅOJud (...) (90561 bytes in total, can be sent over multiple messages)
 
 
 
