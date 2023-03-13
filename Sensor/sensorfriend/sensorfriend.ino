@@ -71,6 +71,9 @@ void ReadString(String& str_ref) {
   if (str_ref.indexOf("wtf") == 0) {//identification
     client.println("sensor friend");
   }
+  if (str_ref.indexOf("hello") == 0) {//stay connected
+    client.println("hello");
+  }
   if (str_ref.indexOf("send") == 0) {//perform task
     client.print("meas ");
     client.print(GetResistance(analogRead(A1)));
