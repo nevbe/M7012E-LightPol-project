@@ -74,4 +74,5 @@ dependencies {
         exclude module: 'fly-safe-database'
     })
     compileOnly 'com.dji:dji-sdk-provided:4.16'
+
 }

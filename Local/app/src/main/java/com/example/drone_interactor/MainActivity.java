@@ -338,14 +338,24 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
         if (null != mVideoSurface) {
             mVideoSurface.setSurfaceTextureListener(this);
 
+            /*
+             * onSurfaceTextureAvailable does not get called if it is already available.
+             * This took longer to figure out than we would like to admit
+             */
+            if (mVideoSurface.isAvailable()) {
+                onSurfaceTextureAvailable(mVideoSurface.getSurfaceTexture(), mVideoSurface.getWidth(), mVideoSurface.getHeight());
+            }
+
             videoDataListener = new VideoFeeder.VideoDataListener() {
                 @Override
                 public void onReceive(byte[] bytes, int size) {
-                    if (null != mCodecManager) {
+                    if (mCodecManager != null) {
                         mCodecManager.sendDataToDecoder(bytes, size);
                     }
                 }
             };
+        } else {
+            showToast("Video surface null!");
         }
     }
 
@@ -413,13 +423,15 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         if (mCodecManager == null) {
-            mCodecManager = new DJICodecManager(this, surface, width, height);
+            mCodecManager = new DJICodecManager(MainActivity.getInstance(), surface, width, height);
         }
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+        if (mCodecManager == null) {
+            mCodecManager = new DJICodecManager(MainActivity.getInstance(), surface, width, height);
+        }
     }
 
     @Override
@@ -433,6 +445,5 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
     }
 }
