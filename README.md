@@ -1,7 +1,8 @@
 # M7011E - Light Polltion Detection
 # Luleå Tekniska Universitet
 
-Main repo for the LightPol project."\n"
+Main repo for the LightPol project.
+
 In this project we implementing a method which helps us to detect the light pollution using Raspberry Pi Pico, dji drone and light sensors.
 
 
