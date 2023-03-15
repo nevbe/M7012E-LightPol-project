@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
+import dji.common.flightcontroller.ObstacleDetectionSector;
 import dji.common.flightcontroller.VisionDetectionState;
 import dji.common.product.Model;
 import dji.common.util.CommonCallbacks;
@@ -39,6 +40,7 @@ import dji.sdk.base.BaseProduct;
 import dji.sdk.camera.Camera;
 import dji.sdk.camera.VideoFeeder;
 import dji.sdk.codec.DJICodecManager;
+import dji.sdk.flightcontroller.FlightAssistant;
 import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     //
     private TextureView mVideoSurface = null;
+
+    private ViewListeners viewListeners;
 
     /**
      * During startup the class will store it's own instance. This method will always be
@@ -116,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
         //Initialize DJI SDK Manager
         mHandler = new Handler(Looper.getMainLooper());
-
-        new ViewListeners((Button) findViewById(R.id.startButton));
 
         mVideoSurface = (TextureView) findViewById(R.id.video_previewer_surface);
 
@@ -299,23 +301,18 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
         TextViews textViews = new TextViews(
                 findViewById(R.id.droneConnectionStatus),
                 findViewById(R.id.serverConnectionStatus),
-                findViewById(R.id.distanceX),
-                findViewById(R.id.distanceY),
-                findViewById(R.id.distanceZ),
-                findViewById(R.id.downwardDistance),
                 findViewById(R.id.currentAngle),
                 findViewById(R.id.forwardDistance),
                 findViewById(R.id.backwardDistance),
                 findViewById(R.id.upwardDistance));
 
         try {
-            // initialize the class droneDataProcessing
-            DroneDataProcessing droneDataProcessing = DroneDataProcessing.getInstance();
-
             // fetch the Aircraft instance from the DJISDKManager
             Aircraft aircraft = (Aircraft)DJISDKManager.getInstance().getProduct();
 
-            // start the class droneControl with correct parameters
+            //this.viewListeners = new ViewListeners((Button) findViewById(R.id.startButton), textViews, aircraft);
+            DroneDataProcessing droneDataProcessing = DroneDataProcessing.getInstance();
+
             droneDataProcessing.setup(textViews, aircraft);
 
             // Initialize video preview
@@ -323,10 +320,14 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
             initSDKCallback();
 
+            //this.viewListeners.init();
+
+
+
             showToast("Started all classes with parameters");
 
         } catch (Exception e) {
-            showToast("Couldn't initialize all classes");
+            showToast(String.format("Class init error: %s", e));
         }
 
     }
