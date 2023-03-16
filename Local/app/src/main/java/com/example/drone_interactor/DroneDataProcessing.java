@@ -40,6 +40,7 @@ public class DroneDataProcessing {
     private TextViews textViews;
     private static DroneDataProcessing INSTANCE = null;
     private Aircraft aircraft = null;
+    private int[] sensorData;
 
     /**
      *
@@ -100,6 +101,7 @@ public class DroneDataProcessing {
 
                         DroneDataProcessing.this.updateText(forwardDistance, backwardDistance, upDistance, angle);
                         Log.e(TAG, Arrays.toString(perceptionInformation.getDistances()));
+                        DroneDataProcessing.this.sensorData = perceptionInformation.getDistances();
                     }
 
                     @Override
@@ -125,6 +127,10 @@ public class DroneDataProcessing {
             MainActivity.getInstance().setText(this.textViews.currentAngle, "Angle: " + currentAngle);
         }
 
+    }
+
+    public int[] getSensorData(){
+        return this.sensorData;
     }
 
 
