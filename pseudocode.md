@@ -1,3 +1,4 @@
+```
 global scope / public:
 	string buffer
 
@@ -14,4 +15,5 @@ main loop:
 	if (buffer.find_first_of('\n') >= 0): //see if string contains a newline
 		ReadCommand(buffer.substring(0, buffer.find_first_of('\n')) //read the buffer up to the newline in a command reader function
 		buffer.substring(buffer.find_first_of('\n'), buffer.length()) //remove everything up to the newline
+```
 	
