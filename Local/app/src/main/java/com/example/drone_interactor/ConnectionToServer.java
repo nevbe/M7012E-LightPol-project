@@ -34,14 +34,14 @@ public class ConnectionToServer {
                     
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                    sendFile("/Users/Hamid Ehsani/Desktop/2.jpeg");
+                    sendFile("/Users/Hamid Ehsani/Desktop/1.jpg");
                     
                     System.out.printf("The file has been sent to the server ");
-                    //TimeUnit.SECONDS.sleep(100);
+                    TimeUnit.SECONDS.sleep(40);
                 
                 }
             catch (Exception e){
-                    System.out.println("OOOOOOOhhhhhh I know what is fel!!");
+                    System.out.println("OOOOOOOhhhhhh I know what is wrong!!");
                 }
         }
         
@@ -54,7 +54,7 @@ public class ConnectionToServer {
         FileInputStream fileInputStream = new FileInputStream(file);
 
         // send file size
-        String str = "img Fabian.jpg;" + file.length();
+        String str = "img Fab.jpg;" + file.length();
        
         dataOutputStream.write(str.getBytes());
         TimeUnit.SECONDS.sleep(1);
@@ -63,11 +63,8 @@ public class ConnectionToServer {
         for(int a=0; a<file.length(); a++) {
         
             
-            if(file.length()==1024){
-                TimeUnit.MILLISECONDS.sleep(5);
-                dataOutputStream.write('a');
-            }
-            dataOutputStream.write('a');
+            
+            dataOutputStream.write(fileInputStream.read());
             
         }
         fileInputStream.close();
