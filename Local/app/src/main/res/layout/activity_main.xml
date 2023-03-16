@@ -8,12 +8,10 @@
 
     <TextureView
         android:id="@+id/video_previewer_surface"
-        android:layout_width="501dp"
-        android:layout_height="291dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,13 +19,13 @@
         android:id="@+id/startButton"
         android:layout_width="225dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@android:color/holo_blue_light"
         android:text="Take Measurement"
         android:textColor="#4E342E"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.024"
+        app:layout_constraintHorizontal_bias="0.975"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Group
@@ -47,59 +45,31 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Upward distance: "
+        android:text="Up: "
+        android:textColor="#55FF55"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backwardDistance" />
-
-    <TextView
-        android:id="@+id/distanceY"
-        android:layout_width="120dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="Y:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceX" />
-
-    <TextView
-        android:id="@+id/distanceZ"
-        android:layout_width="120dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="Z:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceY" />
 
     <TextView
         android:id="@+id/currentAngle"
         android:layout_width="350dp"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Current angle:"
+        android:layout_marginTop="108dp"
+        android:text="Angle:"
+        android:textColor="#55FF55"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceZ" />
-
-    <TextView
-        android:id="@+id/downwardDistance"
-        android:layout_width="350dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Downward Distance:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentAngle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/forwardDistance"
         android:layout_width="350dp"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Forward distance: "
+        android:text="Forward:"
+        android:textColor="#55FF55"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/downwardDistance" />
+        app:layout_constraintTop_toBottomOf="@+id/currentAngle" />
 
     <TextView
         android:id="@+id/backwardDistance"
@@ -107,19 +77,10 @@
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Backward distance: "
+        android:text="Back:"
+        android:textColor="#55FF55"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forwardDistance" />
-
-    <TextView
-        android:id="@+id/distanceX"
-        android:layout_width="120dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
-        android:text="X: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/droneConnectionStatus"
