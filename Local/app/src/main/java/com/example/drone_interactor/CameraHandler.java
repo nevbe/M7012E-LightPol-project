@@ -37,6 +37,7 @@ public class CameraHandler extends AppCompatActivity {
     private static final String TAG = CameraHandler.class.getName();
 
     private Button startButton;
+    private int[] droneDataSnapshot;
 
     private final Handler handler;
     private MediaManager mediaManager;
@@ -93,6 +94,7 @@ public class CameraHandler extends AppCompatActivity {
                                         djiError1 ->
                                         {
                                             if(djiError1 == null){
+                                                this.droneDataSnapshot = DroneDataProcessing.getInstance().getSensorData();
                                                 initializeFileList(camera);
                                             } else {
                                                 //TODO: Error!
@@ -199,6 +201,7 @@ public class CameraHandler extends AppCompatActivity {
             public void onSuccess(String filePath) {
                 //TODO: SuccessToast
                 //TODO: Upload file to server
+                //client1.sendData(filePath, this.droneDataSnapshot);
                 MainActivity.getInstance().showToast("Snap successful!");
             }
 
