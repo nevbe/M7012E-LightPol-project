@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
@@ -19,9 +18,6 @@ import android.os.Looper;
 
 import android.util.Log;
 import android.view.TextureView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,17 +27,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
-import dji.common.flightcontroller.ObstacleDetectionSector;
-import dji.common.flightcontroller.VisionDetectionState;
-import dji.common.product.Model;
-import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
-import dji.sdk.camera.Camera;
 import dji.sdk.camera.VideoFeeder;
 import dji.sdk.codec.DJICodecManager;
-import dji.sdk.flightcontroller.FlightAssistant;
-import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
@@ -66,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     //
     private TextureView mVideoSurface = null;
 
-    private ViewListeners viewListeners;
+    private CameraHandler cameraHandler;
 
     /**
      * During startup the class will store it's own instance. This method will always be
@@ -122,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
         mHandler = new Handler(Looper.getMainLooper());
 
         mVideoSurface = (TextureView) findViewById(R.id.video_previewer_surface);
+
+        cameraHandler = new CameraHandler(findViewById(R.id.startButton));
 
         // The callback for receiving the raw H264 video data for camera live view
         mReceivedVideoDataListener = new VideoFeeder.VideoDataListener() {
@@ -396,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     /** 
      * Shows a toast message
      */
-    private void showToast(final String toastMsg) {
+    void showToast(final String toastMsg) {
 
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
