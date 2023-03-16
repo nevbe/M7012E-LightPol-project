@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 
 
-public class client1 {
+public class ConnectionToServer {
     private static DataOutputStream dataOutputStream = null;
     public static boolean connection= true;
     //private static DataInputStream dataInputStream = null;
