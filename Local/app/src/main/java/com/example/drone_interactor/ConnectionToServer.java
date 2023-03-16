@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 public class ConnectionToServer {
     private static DataOutputStream dataOutputStream = null;
     public static boolean connection= true;
-    //private static DataInputStream dataInputStream = null;
     public static void main(String[] args) throws Exception {
         
      
