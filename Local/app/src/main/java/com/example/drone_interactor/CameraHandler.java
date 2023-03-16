@@ -87,6 +87,7 @@ public class CameraHandler extends AppCompatActivity {
                     }
             );
 
+
             camera.setFlatMode(SettingsDefinitions.FlatCameraMode.PHOTO_SINGLE, djiError ->  {
                     if(djiError == null) {
                         handler.postDelayed(
@@ -202,6 +203,12 @@ public class CameraHandler extends AppCompatActivity {
                 //TODO: SuccessToast
                 //TODO: Upload file to server
                 //client1.sendData(filePath, this.droneDataSnapshot);
+                try {
+                    ConnectionToServer.sendFile(filePath);
+                } catch (Exception e) {
+                    MainActivity.getInstance().showToast("Error sending file:" + e);
+                }
+
                 MainActivity.getInstance().showToast("Snap successful!");
             }
 

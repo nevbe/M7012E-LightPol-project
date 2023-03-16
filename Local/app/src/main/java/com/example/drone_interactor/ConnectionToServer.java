@@ -1,3 +1,8 @@
+package com.example.drone_interactor;
+
+import android.os.Environment;
+import android.widget.TextView;
+
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.TimeUnit;
@@ -7,49 +12,109 @@ import java.util.concurrent.TimeUnit;
 
 public class ConnectionToServer {
     private static DataOutputStream dataOutputStream = null;
+    private static Socket socket;
     public static boolean connection= true;
-    public static void main(String[] args) throws Exception {
-        
-     
-        try (// Establish a connection to the server 192.168.101.141 20276
-        Socket socket = new Socket("192.168.101.141", 20276)) {
+    public static ConnectionToServer INSTANCE;
+
+    public ConnectionToServer(){
+
+    }
+
+    public static ConnectionToServer getInstance(){
+        if(INSTANCE != null){
+            return INSTANCE;
+        } else {
+            return new ConnectionToServer();
+        }
+    }
+
+
+    public static void establishConnection() throws Exception {
+
+        MainActivity.getInstance().showToast("Establishing connection...");
+
+        try {
             // Create input/output streams for communication with the server
             // Send the verification code to the server
-                       
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);                  
-            out.println("no help");
+            socket = new Socket("192.168.119.141", 20276);
+            new SocketThread(socket).start();
 
-            TimeUnit.SECONDS.sleep(2);
-            PrintWriter out1 = new PrintWriter(socket.getOutputStream(), true);
+            try {
 
-          
-            TimeUnit.SECONDS.sleep(2);
-            PrintWriter out2 = new PrintWriter(socket.getOutputStream(), true);
+                MainActivity.getInstance().showToast("Connection established");
 
-                 
-            out2.println("phone friend");
-            TimeUnit.SECONDS.sleep(2);
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                connection = true;
 
-            try{
-                    
-                    dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                    sendFile("/Users/Hamid Ehsani/Desktop/1.jpg");
-                    
-                    System.out.printf("The file has been sent to the server ");
-                    TimeUnit.SECONDS.sleep(40);
-                
-                }
-            catch (Exception e){
-                    System.out.println("OOOOOOOhhhhhh I know what is wrong!!");
-                }
+            } catch (Exception e) {
+                System.out.println("OOOOOOOhhhhhh I know what is wrong!!");
+            }
+
+        } catch (Exception e){
+            MainActivity.getInstance().showToast("Error establishing connection: " + e);
         }
         
     }
 
+    private static class SocketThread extends Thread{
+        private Socket clientSocket;
+        private PrintWriter out;
+        private BufferedReader in;
 
-    private static void sendFile(String path) throws Exception{
-        
+        public SocketThread(Socket socket){
+            this.clientSocket = socket;
+        }
+
+        public void run(){
+            try {
+                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+                String inputLine;
+
+                while (clientSocket.isConnected()) {
+                    if ((inputLine = in.readLine()) != null) {
+                        out.println(generateResponse(inputLine));
+                    }
+                }
+
+                in.close();
+                out.close();
+                clientSocket.close();
+            } catch (IOException e){
+                MainActivity.getInstance().showToast("SocketThread error: " + e);
+            }
+        }
+
+        private static String generateResponse(String command){
+            switch(command){
+                case "send help" : {
+                    return "no help\n";
+                }
+                case "wtf" : {
+                    return "phone friend\n";
+                }
+                case "hello" : {
+                    return "hello";
+                }
+                default : return null;
+            }
+
+        }
+    }
+
+
+
+
+    public static void sendFile(String path) throws Exception{
+        path = Environment.getExternalStorageDirectory().getPath() + "/LightPolDemo/snap_img.jpg"; //TODO: Lazy hack here :)
+
+        if(!connection || dataOutputStream == null){
+            throw new Exception("No active connection");
+        }
+
+
         File file = new File(path);
         FileInputStream fileInputStream = new FileInputStream(file);
 
@@ -59,14 +124,19 @@ public class ConnectionToServer {
         dataOutputStream.write(str.getBytes());
         TimeUnit.SECONDS.sleep(1);
 
-   
-        for(int a=0; a<file.length(); a++) {
-        
-            
-            
-            dataOutputStream.write(fileInputStream.read());
-            
+
+        byte[] bytes = new byte[16 * 1024];
+        InputStream in = new FileInputStream(file);
+
+        int count;
+        int tot = 0;
+        while ((count = in.read(bytes)) > 0) {
+            tot += count;
+            dataOutputStream.write(bytes, 0, count);
         }
+
+        MainActivity.getInstance().showToast("Tot:" + tot + ", Len: " + file.length());
+
         fileInputStream.close();
 
 }}

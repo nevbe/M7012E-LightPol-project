@@ -1,28 +1,15 @@
 package com.example.drone_interactor;
 
 import static java.lang.Math.round;
-import static java.lang.System.currentTimeMillis;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import dji.common.error.DJIError;
-import dji.common.flightcontroller.FlightControllerState;
-import dji.common.flightcontroller.ObstacleDetectionSector;
-import dji.common.flightcontroller.VisionDetectionState;
-import dji.common.flightcontroller.flightassistant.FaceAwareState;
 import dji.common.flightcontroller.flightassistant.PerceptionInformation;
 import dji.common.util.CommonCallbacks;
-import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
 
 @SuppressLint("SetTextI18n")
@@ -106,7 +93,7 @@ public class DroneDataProcessing {
 
                     @Override
                     public void onFailure(DJIError djiError) {
-                        MainActivity.getInstance().setText(DroneDataProcessing.this.textViews.debugText, djiError.getDescription());
+                        MainActivity.getInstance().setText(DroneDataProcessing.this.textViews.droneText, djiError.getDescription());
                     }
                 }
         );

@@ -311,6 +311,13 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
             initSDKCallback();
 
+            try {
+                ConnectionToServer.establishConnection();
+                setText((TextView) findViewById(R.id.serverConnectionStatus), "Connected");
+            } catch (Exception e) {
+                showToast("Connection failed");
+            }
+
             //this.viewListeners.init();
 
 
