@@ -37,6 +37,7 @@ public class CameraHandler extends AppCompatActivity {
     private static final String TAG = CameraHandler.class.getName();
 
     private Button startButton;
+    private int[] droneDataSnapshot;
 
     private final Handler handler;
     private MediaManager mediaManager;
